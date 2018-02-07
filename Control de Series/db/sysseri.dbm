@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.7.0-alpha">
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="controlseries" rect-visible="true" fill-color="#aaff00">
+	<role name="postgres"/>
+	<comment><![CDATA[almacena toda la informacion de las series actuales]]></comment>
+</schema>
+
+<database name="sysserie">
+</database>
+
+<table name="seire">
+	<schema name="controlseries"/>
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+	<comment><![CDATA[almacena la informacion de la serie]]></comment>
+	<position x="371" y="214"/>
+	<column name="idserie" not-null="true">
+		<type name="serial"/>
+		<comment><![CDATA[pk]]></comment>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="descripcion" not-null="true">
+		<type name="varchar" length="1250"/>
+	</column>
+	<column name="estado">
+		<type name="varchar" length="20"/>
+	</column>
+	<constraint name="pk_serie" type="pk-constr" factor="10" table="controlseries.seire">
+		<columns names="idserie" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="uk_serie" type="uq-constr" factor="10" table="controlseries.seire">
+		<columns names="nombre" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="categira">
+	<schema name="controlseries"/>
+	<position x="460" y="52"/>
+	<column name="idcategoria" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="catergoria" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="pk_categoria" type="pk-constr" factor="10" table="controlseries.categira">
+		<columns names="idcategoria" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="uk_categorias" type="uq-constr" factor="10" table="controlseries.categira">
+		<columns names="catergoria" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="categira_has_many_seire" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 col-indexes="3" constr-indexes="2"
+	 src-table="controlseries.categira"
+	 dst-table="controlseries.seire"
+	 src-required="true" dst-required="false"/>
+
+<table name="temporada">
+	<schema name="controlseries"/>
+	<position x="780" y="272"/>
+	<column name="idtenporada" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="num" not-null="true">
+		<type name="integer"/>
+	</column>
+	<constraint name="pk_temporada" type="pk-constr" factor="10" table="controlseries.temporada">
+		<columns names="idtenporada" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="episodio">
+	<schema name="controlseries"/>
+	<position x="440" y="395"/>
+	<column name="idepiesodio" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="num" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="tamano">
+		<type name="double precision"/>
+	</column>
+	<column name="fecha_emicion">
+		<type name="date"/>
+	</column>
+	<constraint name="pk_episodio" type="pk-constr" factor="10" table="controlseries.episodio">
+		<columns names="idepiesodio" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="seire_has_many_episodio" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 col-indexes="4" constr-indexes="1"
+	 src-table="controlseries.seire"
+	 dst-table="controlseries.episodio"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="temporada_has_many_episodio" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 col-indexes="5" constr-indexes="2"
+	 src-table="controlseries.temporada"
+	 dst-table="controlseries.episodio"
+	 src-required="true" dst-required="false"/>
+
+<table name="ubicacion">
+	<schema name="controlseries"/>
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+	<position x="798" y="71"/>
+	<column name="idubicacion" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="ubcacion" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="pk_ubicacion" type="pk-constr" factor="10" table="controlseries.ubicacion">
+		<columns names="idubicacion" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="seire_has_many_ubicacion" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 col-indexes="2" constr-indexes="1"
+	 src-table="controlseries.seire"
+	 dst-table="controlseries.ubicacion"
+	 src-required="true" dst-required="false"/>
+
+<table name="usuario">
+	<schema name="controlseries"/>
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+	<position x="1014" y="186"/>
+	<column name="idusuario">
+		<type name="serial"/>
+	</column>
+	<column name="usuario" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="contracena" not-null="true">
+		<type name="varchar" length="512"/>
+	</column>
+	<column name="tipo_user" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="pk_user" type="pk-constr" factor="10" table="controlseries.usuario">
+		<columns names="idusuario" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="uk_user" type="uq-constr" factor="10" table="controlseries.usuario">
+		<columns names="usuario" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+</dbmodel>
